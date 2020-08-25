@@ -1,0 +1,20 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
+  <metadata>
+    <id>EnvironmentSynchronizer</id>
+    <version>$version$</version>
+    <title>Epinova - Environment synchronizer</title>
+    <authors>Ove Lartelius</authors>
+	<owners>Epinova AB</owners>
+	<iconUrl>http://www.epinova.no/favicon.ico</iconUrl>
+	<projectUrl>https://github.com/ovelartelius/episerver-env-sync</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Environment synchronizer for SiteDefinitions and ScheduledJobs for Episerver CMS</description>
+    <copyright>Copyright ©  2020</copyright>
+	  <tags>Epinova EpiServer</tags>
+    <dependencies>
+      <dependency id="Castle.Core" version="4.2.1" />
+      <dependency id="EPiServer.CMS.AspNet" version="11.17.0" />
+    </dependencies>
+  </metadata>
+</package>
