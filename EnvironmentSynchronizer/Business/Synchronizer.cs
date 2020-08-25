@@ -168,8 +168,6 @@ namespace EnvironmentSynchronizer.Business
 						_logger.Warn($"Could not find scheduled job with {extraInfoMessage}");
 					}
 				}
-
-				updatedJobs++;
 			}
 
 			return updatedJobs;
