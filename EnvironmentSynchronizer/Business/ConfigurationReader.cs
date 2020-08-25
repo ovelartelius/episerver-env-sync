@@ -47,7 +47,10 @@ namespace EnvironmentSynchronizer.Business
 							SiteUrl = string.IsNullOrEmpty(element.SiteUrl) ? null : new Uri(element.SiteUrl),
 							Hosts = element.Hosts.ToHostDefinitions()
 						};
-						syncData.SiteDefinitions.Add(siteDefinition);
+						if (!string.IsNullOrEmpty(siteDefinition.Name) && siteDefinition.SiteUrl != null)
+						{
+							syncData.SiteDefinitions.Add(siteDefinition);
+						}
 					}
 				}
 				else
