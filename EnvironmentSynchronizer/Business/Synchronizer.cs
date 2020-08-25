@@ -86,7 +86,7 @@ namespace EnvironmentSynchronizer.Business
 				}
 				else
 				{
-					_logger.Warn("No site definitions found to synchronize.");
+					_logger.Warn("No scheduled jobs found to synchronize.");
 				}
 			}
 			catch (Exception ex)
@@ -145,13 +145,16 @@ namespace EnvironmentSynchronizer.Business
 				else
 				{
 					ScheduledJob existingJob = null;
+					var extraInfoMessage = string.Empty;
 					if (!string.IsNullOrEmpty(job.Id))
 					{
 						existingJob = existingScheduledJobs.FirstOrDefault(x => x.ID == Guid.Parse(job.Id));
+						extraInfoMessage = $"Id = {job.Id}";
 					}
 					else if (!string.IsNullOrEmpty(job.Name))
 					{
 						existingJob = existingScheduledJobs.FirstOrDefault(x => x.Name == job.Name || x.AssemblyName == job.Name);
+						extraInfoMessage = $"Name/AssemblyName = {job.Name}";
 					}
 
 					if (existingJob != null)
@@ -159,6 +162,10 @@ namespace EnvironmentSynchronizer.Business
 						existingJob.IsEnabled = job.IsEnabled;
 						_scheduledJobRepository.Save(existingJob);
 						updatedJobs++;
+					}
+					else
+					{
+						_logger.Warn($"Could not find scheduled job with {extraInfoMessage}");
 					}
 				}
 
