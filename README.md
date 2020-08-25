@@ -4,8 +4,9 @@ If you are moving database backups between environments and have specific hostna
 The synchronizer can be run as a InitializationModule or as a ScheduleJob. It depends on what you think is fitting your environment and project.
 
 ## Installation
-Grab the latest dll from //dlls/EnvironmentSynchronizer.[version] and reference that in your project.  
+Grab the latest dll from https://github.com/ovelartelius/episerver-env-sync/tree/master/dlls /EnvironmentSynchronizer.[version] and reference that in your project.  
 When we are able to publish this as a NuGet the isntallation will be a regular NuGet installation of the package "".
+![NuGet](documentation/EnvironmentSynchronizer_NuGet.jpg)
 
 ## Configuration
 Example web.config
