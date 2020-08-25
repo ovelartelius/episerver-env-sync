@@ -29,48 +29,54 @@ namespace EnvironmentSynchronizer.Business
 		public SynchronizationData ReadConfiguration()
 		{
 			var config = new SynchronizerConfiguration();
-
 			var syncData = new SynchronizationData();
 
-			syncData.RunAsInitializationModule = config.Settings.RunAsInitializationModule;
-
-			if (config.Settings.SiteDefinitions != null && config.Settings.SiteDefinitions.Count > 0)
+			try
 			{
-				syncData.SiteDefinitions = new List<SiteDefinition>();
-				foreach (SiteDefinitionElement element in config.Settings.SiteDefinitions)
+				syncData.RunAsInitializationModule = config.Settings.RunAsInitializationModule;
+
+				if (config.Settings.SiteDefinitions != null && config.Settings.SiteDefinitions.Count > 0)
 				{
-					var siteDefinition = new SiteDefinition()
+					syncData.SiteDefinitions = new List<SiteDefinition>();
+					foreach (SiteDefinitionElement element in config.Settings.SiteDefinitions)
 					{
-						Id = string.IsNullOrEmpty(element.Id) ? Guid.Empty : new Guid(element.Id),
-						Name = string.IsNullOrEmpty(element.Name) ? string.Empty : element.Name,
-						SiteUrl = string.IsNullOrEmpty(element.SiteUrl) ? null : new Uri(element.SiteUrl),
-						Hosts = element.Hosts.ToHostDefinitions()
-					};
-					syncData.SiteDefinitions.Add(siteDefinition);
+						var siteDefinition = new SiteDefinition()
+						{
+							Id = string.IsNullOrEmpty(element.Id) ? Guid.Empty : new Guid(element.Id),
+							Name = string.IsNullOrEmpty(element.Name) ? string.Empty : element.Name,
+							SiteUrl = string.IsNullOrEmpty(element.SiteUrl) ? null : new Uri(element.SiteUrl),
+							Hosts = element.Hosts.ToHostDefinitions()
+						};
+						syncData.SiteDefinitions.Add(siteDefinition);
+					}
+				}
+				else
+				{
+					_logger.Info($"Found no site definitions to handle.");
+				}
+
+				if (config.Settings.ScheduleJobs != null && config.Settings.ScheduleJobs.Count > 0)
+				{
+					syncData.ScheduledJobs = new List<Job>();
+					foreach (ScheduledJobElement element in config.Settings.ScheduleJobs)
+					{
+						var job = new Job
+						{
+							Id = element.Id,
+							Name = element.Name,
+							IsEnabled = element.IsEnabled
+						};
+						syncData.ScheduledJobs.Add(job);
+					}
+				}
+				else
+				{
+					_logger.Info($"Found no schedule jobs to handle.");
 				}
 			}
-			else
+			catch (Exception ex)
 			{
-				_logger.Info($"Found no site definitions to handle.");
-			}
-
-			if (config.Settings.ScheduleJobs != null && config.Settings.ScheduleJobs.Count > 0)
-			{
-				syncData.ScheduledJobs = new List<Job>();
-				foreach (ScheduledJobElement element in config.Settings.ScheduleJobs)
-				{
-					var job = new Job
-					{
-						Id = element.Id,
-						Name = element.Name,
-						IsEnabled = element.IsEnabled
-					};
-					syncData.ScheduledJobs.Add(job);
-				}
-			}
-			else
-			{
-				_logger.Info($"Found no schedule jobs to handle.");
+				_logger.Error($"No configuration found in the web.config. Missing env.synchronizer section.");
 			}
 
 			return syncData;
