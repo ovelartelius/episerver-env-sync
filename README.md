@@ -68,5 +68,5 @@ Example:
     <schedulejob Name="Episerver-notification" IsEnabled="true" />
   </schedulejobs>
 ```  
-In this example it first go through all ScheduledJobs and desable them. And then it will enable the job "Episerver-notification".
+In this example it first go through all ScheduledJobs and disable them. And then it will enable the job "Episerver-notification".
 **IsEnabled** [bool] set if the job should be enabled/disabled. 
