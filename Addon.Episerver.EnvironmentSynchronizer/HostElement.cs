@@ -2,7 +2,7 @@
 using System.Configuration;
 using EPiServer.Web;
 
-namespace EnvironmentSynchronizer
+namespace Addon.Episerver.EnvironmentSynchronizer
 {
     public class HostElement : ConfigurationElement
     {

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using EPiServer.Web;
 
-namespace EnvironmentSynchronizer.Models
+namespace Addon.Episerver.EnvironmentSynchronizer.Models
 {
 	public interface ISynchronizationData
 	{

@@ -1,10 +1,10 @@
 ﻿using System.Reflection;
-using EnvironmentSynchronizer.Business;
+using Addon.Episerver.EnvironmentSynchronizer.Business;
 using EPiServer.Framework;
 using EPiServer.Framework.Initialization;
 using EPiServer.Logging.Compatibility;
 
-namespace EnvironmentSynchronizer.InitializationModule
+namespace Addon.Episerver.EnvironmentSynchronizer.InitializationModule
 {
 
 	[InitializableModule]

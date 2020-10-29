@@ -1,11 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Reflection;
-using EnvironmentSynchronizer.Models;
+using Addon.Episerver.EnvironmentSynchronizer.Models;
 using EPiServer.Logging.Compatibility;
 using EPiServer.Web;
 
-namespace EnvironmentSynchronizer.Business
+namespace Addon.Episerver.EnvironmentSynchronizer.Business
 {
 	public interface IConfigurationReader
 	{
