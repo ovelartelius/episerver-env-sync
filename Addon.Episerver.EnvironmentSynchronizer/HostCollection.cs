@@ -3,7 +3,7 @@ using System.Configuration;
 using System.Globalization;
 using EPiServer.Web;
 
-namespace EnvironmentSynchronizer
+namespace Addon.Episerver.EnvironmentSynchronizer
 {
 	public class HostCollection : ConfigurationElementCollection
 	{

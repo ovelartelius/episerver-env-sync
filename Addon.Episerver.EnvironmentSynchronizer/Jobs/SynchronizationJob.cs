@@ -1,12 +1,12 @@
 ﻿using System;
 using System.Diagnostics;
 using System.Reflection;
-using EnvironmentSynchronizer.Business;
+using Addon.Episerver.EnvironmentSynchronizer.Business;
 using EPiServer.Logging.Compatibility;
 using EPiServer.PlugIn;
 using EPiServer.Scheduler;
 
-namespace EnvironmentSynchronizer.Jobs
+namespace Addon.Episerver.EnvironmentSynchronizer.Jobs
 {
 	[ScheduledPlugIn(DisplayName = "Environment synchronization", SortIndex = 100)]
 	public class SynchronizationJob : ScheduledJobBase

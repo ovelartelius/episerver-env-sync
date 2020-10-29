@@ -4,11 +4,11 @@
   <PropertyGroup>
     <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
-    <ProjectGuid>{F4E7F0EC-A4AF-4211-95F4-A2AAECFD8149}</ProjectGuid>
+    <ProjectGuid>{C06A863E-E799-4D7F-BC89-969B843A1829}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>EnvironmentSynchronizer</RootNamespace>
-    <AssemblyName>EnvironmentSynchronizer</AssemblyName>
+    <RootNamespace>Episerver.Addon.EnvironmentSynchronizer</RootNamespace>
+    <AssemblyName>Episerver.Addon.EnvironmentSynchronizer</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>false</Deterministic>

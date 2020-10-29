@@ -1,9 +1,9 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio Version 16
-VisualStudioVersion = 16.0.29926.136
+# Visual Studio 15
+VisualStudioVersion = 15.0.28307.1169
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "EnvironmentSynchronizer", "EnvironmentSynchronizer\EnvironmentSynchronizer.csproj", "{F4E7F0EC-A4AF-4211-95F4-A2AAECFD8149}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Addon.Episerver.EnvironmentSynchronizer", "Addon.Episerver.EnvironmentSynchronizer\Addon.Episerver.EnvironmentSynchronizer.csproj", "{C06A863E-E799-4D7F-BC89-969B843A1829}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -15,6 +15,10 @@ Global
 		{F4E7F0EC-A4AF-4211-95F4-A2AAECFD8149}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F4E7F0EC-A4AF-4211-95F4-A2AAECFD8149}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F4E7F0EC-A4AF-4211-95F4-A2AAECFD8149}.Release|Any CPU.Build.0 = Release|Any CPU
+		{C06A863E-E799-4D7F-BC89-969B843A1829}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{C06A863E-E799-4D7F-BC89-969B843A1829}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{C06A863E-E799-4D7F-BC89-969B843A1829}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{C06A863E-E799-4D7F-BC89-969B843A1829}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

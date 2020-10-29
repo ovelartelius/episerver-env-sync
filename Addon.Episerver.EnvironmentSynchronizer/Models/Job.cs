@@ -1,4 +1,4 @@
-﻿namespace EnvironmentSynchronizer.Models
+﻿namespace Addon.Episerver.EnvironmentSynchronizer.Models
 {
 	public class Job
 	{

@@ -1,6 +1,6 @@
 ﻿using System.Configuration;
 
-namespace EnvironmentSynchronizer
+namespace Addon.Episerver.EnvironmentSynchronizer
 {
 	public class ScheduledJobCollection : ConfigurationElementCollection, System.Collections.ICollection
 	{
