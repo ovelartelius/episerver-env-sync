@@ -23,7 +23,6 @@ namespace Addon.Episerver.EnvironmentSynchronizer.InitializationModule
 		{
 			var configReader = new ConfigurationReader();
 			var syncData = configReader.ReadConfiguration();
-
 			if (syncData.RunAsInitializationModule)
 			{
 				Logger.Info($"Environment synchronizer found RunAsInitializationModule=true");
