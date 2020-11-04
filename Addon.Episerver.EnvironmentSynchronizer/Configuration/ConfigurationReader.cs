@@ -1,30 +1,19 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Reflection;
-using Addon.Episerver.EnvironmentSynchronizer.Models;
-using EPiServer.Logging.Compatibility;
+﻿using Addon.Episerver.EnvironmentSynchronizer.Models;
+using EPiServer.Logging;
 using EPiServer.Web;
+using System;
+using System.Collections.Generic;
 
-namespace Addon.Episerver.EnvironmentSynchronizer.Business
+namespace Addon.Episerver.EnvironmentSynchronizer.Configuration
 {
-	public interface IConfigurationReader
+    public interface IConfigurationReader
 	{
 		SynchronizationData ReadConfiguration();
 	}
 
 	public class ConfigurationReader : IConfigurationReader
 	{
-		private readonly ILog _logger;
-
-		public ConfigurationReader()
-		{
-			_logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-		}
-
-		public ConfigurationReader(ILog logger)
-		{
-			_logger = logger;
-		}
+		private static readonly ILogger _logger = LogManager.GetLogger();
 
 		public SynchronizationData ReadConfiguration()
 		{
@@ -55,15 +44,15 @@ namespace Addon.Episerver.EnvironmentSynchronizer.Business
 				}
 				else
 				{
-					_logger.Info($"Found no site definitions to handle.");
+					_logger.Information($"Found no site definitions to handle.");
 				}
 
 				if (config.Settings.ScheduleJobs != null && config.Settings.ScheduleJobs.Count > 0)
 				{
-					syncData.ScheduledJobs = new List<Job>();
+					syncData.ScheduledJobs = new List<ScheduledJobDefinition>();
 					foreach (ScheduledJobElement element in config.Settings.ScheduleJobs)
 					{
-						var job = new Job
+						var job = new ScheduledJobDefinition
 						{
 							Id = element.Id,
 							Name = element.Name,
@@ -74,12 +63,12 @@ namespace Addon.Episerver.EnvironmentSynchronizer.Business
 				}
 				else
 				{
-					_logger.Info($"Found no schedule jobs to handle.");
+					_logger.Information($"Found no schedule jobs to handle.");
 				}
 			}
 			catch (Exception ex)
 			{
-				_logger.Error($"No configuration found in the web.config. Missing env.synchronizer section.");
+				_logger.Error($"No configuration found in the web.config. Missing env.synchronizer section.", ex);
 			}
 
 			return syncData;

@@ -1,16 +1,9 @@
 ﻿using System.Configuration;
 
-namespace Addon.Episerver.EnvironmentSynchronizer
+namespace Addon.Episerver.EnvironmentSynchronizer.Configuration
 {
 	public class ScheduledJobCollection : ConfigurationElementCollection, System.Collections.ICollection
 	{
-		/// <summary>
-		/// Initializes a new instance of the <see cref="ScheduledJobCollection"/> class.
-		/// </summary>
-		public ScheduledJobCollection()
-		{
-		}
-
 		public override ConfigurationElementCollectionType CollectionType
 		{
 			get { return ConfigurationElementCollectionType.AddRemoveClearMap; }
