@@ -20,6 +20,11 @@ namespace Addon.Episerver.EnvironmentSynchronizer.Configuration
 			var config = new SynchronizerConfiguration();
 			var syncData = new SynchronizationData();
 
+			if(config.Settings == null)
+            {
+				return syncData;
+            }
+
 			try
 			{
 				syncData.RunAsInitializationModule = config.Settings.RunAsInitializationModule;

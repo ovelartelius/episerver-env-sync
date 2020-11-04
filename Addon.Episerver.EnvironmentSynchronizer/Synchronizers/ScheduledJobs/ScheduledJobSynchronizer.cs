@@ -26,60 +26,70 @@ namespace Addon.Episerver.EnvironmentSynchronizer.Synchronizers.ScheduledJobs
 		public void Synchronize(string environmentName)
         {
 			var syncConfiguration = _configurationReader.ReadConfiguration();
+
+            if(syncConfiguration.ScheduledJobs == null)
+            {
+                return;
+            }
+
 			UpdateScheduledJobs(syncConfiguration.ScheduledJobs);
 		}
 
-		private int UpdateScheduledJobs(List<ScheduledJobDefinition> jobs)
+		private void UpdateScheduledJobs(List<ScheduledJobDefinition> scheduledJobConfiguration)
 		{
-			var updatedJobs = 0;
-
 			var existingScheduledJobs = _scheduledJobRepository.List().ToList();
 
-			foreach (var job in jobs)
+			foreach (var job in scheduledJobConfiguration)
 			{
 				if (!string.IsNullOrEmpty(job.Id) && job.Id == "*")
-				{
-					foreach (var existingScheduledJob in existingScheduledJobs)
-					{
-                        if (existingScheduledJob.IsEnabled == job.IsEnabled)
-                        {
-							continue;
-                        }
-
-						existingScheduledJob.IsEnabled = job.IsEnabled;
-						_scheduledJobRepository.Save(existingScheduledJob);
-						updatedJobs++;
-					}
-				}
-				else
-				{
-					ScheduledJob existingJob = null;
-					var extraInfoMessage = string.Empty;
-					if (!string.IsNullOrEmpty(job.Id))
-					{
-						existingJob = existingScheduledJobs.FirstOrDefault(x => x.ID == Guid.Parse(job.Id));
-						extraInfoMessage = $"Id = {job.Id}";
-					}
-					else if (!string.IsNullOrEmpty(job.Name))
-					{
-						existingJob = existingScheduledJobs.FirstOrDefault(x => x.Name == job.Name || x.AssemblyName == job.Name);
-						extraInfoMessage = $"Name/AssemblyName = {job.Name}";
-					}
-
-					if (existingJob != null)
-					{
-						existingJob.IsEnabled = job.IsEnabled;
-						_scheduledJobRepository.Save(existingJob);
-						updatedJobs++;
-					}
-					else
-					{
-						_logger.Warning($"Could not find scheduled job with {extraInfoMessage}");
-					}
-				}
-			}
-
-			return updatedJobs;
+                {
+                    UpdateAllScheduleJobSettings(existingScheduledJobs, job);
+                }
+                else
+                {
+                    UpdateScheduleJobSettings(existingScheduledJobs, job);
+                }
+            }
 		}
-	}
+
+        private void UpdateAllScheduleJobSettings(List<ScheduledJob> existingScheduledJobs, ScheduledJobDefinition job)
+        {
+            foreach (var existingScheduledJob in existingScheduledJobs)
+            {
+                if (existingScheduledJob.IsEnabled == job.IsEnabled)
+                {
+                    continue;
+                }
+
+                existingScheduledJob.IsEnabled = job.IsEnabled;
+                _scheduledJobRepository.Save(existingScheduledJob);
+            }
+        }
+
+        private void UpdateScheduleJobSettings(List<ScheduledJob> existingScheduledJobs, ScheduledJobDefinition job)
+        {
+            ScheduledJob existingJob = null;
+            var extraInfoMessage = string.Empty;
+            if (!string.IsNullOrEmpty(job.Id))
+            {
+                existingJob = existingScheduledJobs.FirstOrDefault(x => x.ID == Guid.Parse(job.Id));
+                extraInfoMessage = $"Id = {job.Id}";
+            }
+            else if (!string.IsNullOrEmpty(job.Name))
+            {
+                existingJob = existingScheduledJobs.FirstOrDefault(x => x.Name == job.Name || x.AssemblyName == job.Name);
+                extraInfoMessage = $"Name/AssemblyName = {job.Name}";
+            }
+
+            if (existingJob != null)
+            {
+                existingJob.IsEnabled = job.IsEnabled;
+                _scheduledJobRepository.Save(existingJob);
+            }
+            else
+            {
+                _logger.Warning($"Could not find scheduled job with {extraInfoMessage}");
+            }
+        }
+    }
 }

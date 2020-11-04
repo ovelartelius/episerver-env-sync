@@ -30,15 +30,15 @@ namespace Addon.Episerver.EnvironmentSynchronizer.Configuration
 			}
 		}
 
-		[ConfigurationProperty("schedulejobs")]
-		[ConfigurationCollection(typeof(ScheduledJobCollection), AddItemName = "schedulejob")]
+		[ConfigurationProperty("scheduledjobs")]
+		[ConfigurationCollection(typeof(ScheduledJobCollection), AddItemName = "scheduledjob")]
 		public ScheduledJobCollection ScheduleJobs
 		{
 			get
 			{
-				if (base["schedulejobs"] != null && ((ConfigurationElement)base["schedulejobs"]).ElementInformation.IsPresent)
+				if (base["scheduledjobs"] != null && ((ConfigurationElement)base["scheduledjobs"]).ElementInformation.IsPresent)
 				{
-					return (ScheduledJobCollection)base["schedulejobs"];
+					return (ScheduledJobCollection)base["scheduledjobs"];
 				}
 				else
 				{

@@ -1,11 +1,11 @@
 # Episerver CMS environment synchronizer
-If you are moving database backups between environments and have specific hostnames that should be changed when run in another environment. Then you can use this NuGet package to solve this problem. You can also update ScheduledJobs if you need to enable/disable the jobs in different environments.  
+When synchronizing databases between environments there might be things that needs to be configured for each environment.
+This addon provides the infrastructure to add handlers to handle this, including prebuilt handlers for siteDefinitions and ScheduledJobs that can be configured in configuration files (a.k.a. web.config)
   
-The synchronizer can be run as a InitializationModule or as a ScheduleJob. It depends on what you think is fitting your environment and project.
+The synchronizer can be run as a InitializationModule or as a ScheduledJob. It depends on what you think is fitting your environment and project.
 
 ## Installation
-Grab the latest dll from https://github.com/ovelartelius/episerver-env-sync/tree/master/dlls /EnvironmentSynchronizer.[version] and reference that in your project.  
-When we are able to publish this as a NuGet the isntallation will be a regular NuGet installation of the package "".
+This will be packaged as a Nuget package named Addon.Episerver.EnvironmentSynchronizer and put in Episervers Nuget feed once tested a bit more.
 ![NuGet](documentation/EnvironmentSynchronizer_NuGet.jpg)
 
 ## Configuration
@@ -13,7 +13,7 @@ Example web.config
 ```xml
 <configuration>
   <configSections>
-    <section name="env.synchronizer" type="EnvironmentSynchronizer.SynchronizerSection" allowLocation="true" allowDefinition="Everywhere" />
+    <section name="env.synchronizer" type="Addon.Episerver.EnvironmentSynchronizer.Configuration.SynchronizerSection" allowLocation="true" allowDefinition="Everywhere" />
   </configSections>
 	<env.synchronizer runAsInitializationModule="true">
 		<sitedefinitions>
@@ -21,19 +21,55 @@ Example web.config
 				<hosts>
 					<host Name="*" UseSecureConnection="false" Language="" />
 					<host Name="local.alloydemo.se" UseSecureConnection="false" Language="en" />
-					<!--Type: Undefined|Edit|Primary|RedirectPermanent|RedirectTemporary-->
 				</hosts>
 			</sitedefinition>
 		</sitedefinitions>
-		<schedulejobs>
-			<schedulejob Id="*" Name="*" IsEnabled="false" />
-			<schedulejob Name="Episerver-notifieringar" IsEnabled="true" />
-		</schedulejobs>
+		<scheduledjobs>
+			<scheduledjob Id="*" Name="*" IsEnabled="false" />
+			<scheduledjob Name="YourScheduledJob" IsEnabled="true" />
+		</scheduledjobs>
 	</env.synchronizer>
 ```
 
+## Adding custom handlers
+You can add custom handlers by creating and registering a class that implements IEnvironmentSynchronizer
+
+using Addon.Episerver.EnvironmentSynchronizer;
+using EPiServer.ServiceLocation;
+
+namespace Yoursite.Infrastructure.Environments
+{
+    [ServiceConfiguration(typeof(IEnvironmentSynchronizer))]
+    public class TestEnvironmentSynchronizer : IEnvironmentSynchronizer
+    {
+        public void Synchronize(string environmentName)
+        {
+            //TODO: Do something
+        }
+    }
+}
+
+## About environments
+Episerver has many different ways to be hosted. We have added the infrastructure to tell your synchronizers the current environment - but you need to implement the logic for this yourself. For instance:
+
+using Addon.Episerver.EnvironmentSynchronizer;
+using EPiServer.ServiceLocation;
+using System.Configuration;
+
+namespace Yoursite.Infrastructure.Environments
+{
+    [ServiceConfiguration(typeof(IEnvironmentNameSource))]
+    public class SiteEnvironmentNameSource : IEnvironmentNameSource
+    {
+        public string GetCurrentEnvironementName()
+        {
+            return ConfigurationManager.AppSettings["EnvironmentName"];
+        }
+    }
+}
+
 ### runAsInitializationModule
-Tells the synchronizer that you want to run it as InitializationModule. All settings that if can update will be executed.
+Tells the synchronizer that you want to run it as InitializationModule.
 
 ### sitedefinition
 **Id** is the GUID that identify the site. If this is provided it will ignore the "Name" attribute.

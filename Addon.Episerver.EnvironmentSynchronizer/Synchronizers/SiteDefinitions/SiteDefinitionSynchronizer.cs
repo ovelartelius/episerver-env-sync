@@ -12,72 +12,71 @@ namespace Addon.Episerver.EnvironmentSynchronizer.Synchronizers.SiteDefinitions
     [ServiceConfiguration(typeof(IEnvironmentSynchronizer))]
     public class SiteDefinitionSynchronizer : IEnvironmentSynchronizer
     {
-		private static readonly ILogger _logger = LogManager.GetLogger();
-		private readonly ISiteDefinitionRepository _siteDefinitionRepository;
-		private readonly ConfigurationReader _configurationReader;
+        private static readonly ILogger _logger = LogManager.GetLogger();
+        private readonly ISiteDefinitionRepository _siteDefinitionRepository;
+        private readonly ConfigurationReader _configurationReader;
 
-		public SiteDefinitionSynchronizer(
-			ISiteDefinitionRepository siteDefinitionRepository,
-			ConfigurationReader configurationReader)
+        public SiteDefinitionSynchronizer(
+            ISiteDefinitionRepository siteDefinitionRepository,
+            ConfigurationReader configurationReader)
         {
-			_siteDefinitionRepository = siteDefinitionRepository;
-			_configurationReader = configurationReader;
-		}
+            _siteDefinitionRepository = siteDefinitionRepository;
+            _configurationReader = configurationReader;
+        }
 
-		public void Synchronize(string environmentName)
+        public void Synchronize(string environmentName)
         {
-			var stopwatch = Stopwatch.StartNew();
+            var syncConfiguration = _configurationReader.ReadConfiguration();
 
-			var syncConfiguration = _configurationReader.ReadConfiguration();
+            if (syncConfiguration.SiteDefinitions == null || !syncConfiguration.SiteDefinitions.Any())
+            {
+                _logger.Information("No site definitions found to synchronize.");
+                return;
+            }
 
-			try
-			{
-				if (syncConfiguration.SiteDefinitions != null && syncConfiguration.SiteDefinitions.Any())
-				{
-					var updatedSites = MergeSiteDefinitions(syncConfiguration.SiteDefinitions);
+            var stopwatch = Stopwatch.StartNew();
 
-					_logger.Information($"Updated total of {updatedSites} sites.");
-				}
-				else
-				{
-					_logger.Information("No site definitions found to synchronize.");
-				}
-			}
-			catch (Exception ex)
-			{
-				_logger.Error("An excetion occured when trying to synchronize site definitions", ex);
-			}
+            try
+            {
+                var updatedSites = MergeSiteDefinitions(syncConfiguration.SiteDefinitions);
 
-			stopwatch.Stop();
-			_logger.Information($"Synchronize site definitions took {stopwatch.ElapsedMilliseconds}ms.");
-		}
+                _logger.Information($"Updated total of {updatedSites} sites.");
+            }
+            catch (Exception ex)
+            {
+                _logger.Error("An excetion occured when trying to synchronize site definitions", ex);
+            }
 
-		private int MergeSiteDefinitions(IEnumerable<SiteDefinition> mergeSiteDefinitions)
-		{
-			var updatedSites = 0;
-			var existingSites = _siteDefinitionRepository.List();
+            stopwatch.Stop();
+            _logger.Information($"Synchronize site definitions took {stopwatch.ElapsedMilliseconds}ms.");
+        }
 
-			foreach (var definition in mergeSiteDefinitions)
-			{
-				//Update the site definition if it doesn't have the same value for SiteUrl 
-				var site = existingSites.FirstOrDefault(s => s.Name == definition.Name && s.SiteUrl != definition.SiteUrl);
-				if (site != null)
-				{
-					site = site.CreateWritableClone();
-					site.SiteUrl = definition.SiteUrl;
-					site.Hosts = definition.Hosts;
+        private int MergeSiteDefinitions(IEnumerable<SiteDefinition> siteDefinitionsToUpdate)
+        {
+            var updatedSites = 0;
+            var existingSites = _siteDefinitionRepository.List();
 
-					_siteDefinitionRepository.Save(site);
-					updatedSites++;
-					_logger.Information($"Updated {definition.Name} to site URL {definition.SiteUrl} and {definition.Hosts.Count} hostnames.");
-				}
-				else
-				{
-					_logger.Warning($"Could not find site {definition.Name} or site already has site URL {definition.SiteUrl}.");
-				}
-			}
+            foreach (var siteDefinitionToUpdate in siteDefinitionsToUpdate)
+            {
+                //Update the site definition if it doesn't have the same value for SiteUrl 
+                var site = existingSites.FirstOrDefault(s => s.Name == siteDefinitionToUpdate.Name && s.SiteUrl != siteDefinitionToUpdate.SiteUrl);
+                if (site != null)
+                {
+                    site = site.CreateWritableClone();
+                    site.SiteUrl = siteDefinitionToUpdate.SiteUrl;
+                    site.Hosts = siteDefinitionToUpdate.Hosts;
 
-			return updatedSites;
-		}
-	}
+                    _siteDefinitionRepository.Save(site);
+                    updatedSites++;
+                    _logger.Information($"Updated {siteDefinitionToUpdate.Name} to site URL {siteDefinitionToUpdate.SiteUrl} and {siteDefinitionToUpdate.Hosts.Count} hostnames.");
+                }
+                else
+                {
+                    _logger.Warning($"Could not find site {siteDefinitionToUpdate.Name} or site already has site URL {siteDefinitionToUpdate.SiteUrl}.");
+                }
+            }
+
+            return updatedSites;
+        }
+    }
 }
