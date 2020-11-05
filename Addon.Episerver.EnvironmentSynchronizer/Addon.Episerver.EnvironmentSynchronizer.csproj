@@ -7,8 +7,8 @@
     <ProjectGuid>{C06A863E-E799-4D7F-BC89-969B843A1829}</ProjectGuid>
     <OutputType>Library</OutputType>
     <AppDesignerFolder>Properties</AppDesignerFolder>
-    <RootNamespace>Episerver.Addon.EnvironmentSynchronizer</RootNamespace>
-    <AssemblyName>Episerver.Addon.EnvironmentSynchronizer</AssemblyName>
+    <RootNamespace>Addon.Episerver.EnvironmentSynchronizer</RootNamespace>
+    <AssemblyName>Addon.Episerver.EnvironmentSynchronizer</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <Deterministic>false</Deterministic>
@@ -137,28 +137,31 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Business\ConfigurationReader.cs" />
-    <Compile Include="Business\Synchronizer.cs" />
+    <Compile Include="Configuration\ConfigurationReader.cs" />
+    <Compile Include="EnvironmentSynchronizationManager.cs" />
+    <Compile Include="EnvironmentHelper.cs" />
+    <Compile Include="EnvironmentNames.cs" />
+    <Compile Include="IEnvironmentSynchronizer.cs" />
     <Compile Include="InitializationModule\SynchronizationInitializationModule.cs" />
     <Compile Include="Jobs\SynchronizationJob.cs" />
-    <Compile Include="Models\Job.cs" />
-    <Compile Include="Models\SynchronizationData.cs" />
-    <Compile Include="SynchronizerConfiguration.cs" />
-    <Compile Include="HostCollection.cs" />
-    <Compile Include="ScheduledJobCollection.cs" />
-    <Compile Include="ScheduledJobElement.cs" />
-    <Compile Include="HostElement.cs" />
-    <Compile Include="SynchronizerSection.cs" />
-    <Compile Include="SiteDefinitionCollection.cs" />
-    <Compile Include="SiteDefinitionElement.cs" />
+    <Compile Include="Configuration\ScheduledJobDefinition.cs" />
+    <Compile Include="Configuration\SynchronizationData.cs" />
+    <Compile Include="Configuration\SynchronizerConfiguration.cs" />
+    <Compile Include="Configuration\HostCollection.cs" />
+    <Compile Include="Configuration\ScheduledJobCollection.cs" />
+    <Compile Include="Configuration\ScheduledJobElement.cs" />
+    <Compile Include="Configuration\HostElement.cs" />
+    <Compile Include="Configuration\SynchronizerSection.cs" />
+    <Compile Include="Configuration\SiteDefinitionCollection.cs" />
+    <Compile Include="Configuration\SiteDefinitionElement.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Synchronizers\ScheduledJobs\ScheduledJobSynchronizer.cs" />
+    <Compile Include="Synchronizers\SiteDefinitions\SiteDefinitionSynchronizer.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="EnvironmentSynchronizer.nuspec" />
     <None Include="packages.config" />
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="Config\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>

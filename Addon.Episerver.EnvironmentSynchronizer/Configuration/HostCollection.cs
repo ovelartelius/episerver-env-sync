@@ -3,17 +3,10 @@ using System.Configuration;
 using System.Globalization;
 using EPiServer.Web;
 
-namespace Addon.Episerver.EnvironmentSynchronizer
+namespace Addon.Episerver.EnvironmentSynchronizer.Configuration
 {
 	public class HostCollection : ConfigurationElementCollection
 	{
-		/// <summary>
-		/// Initializes a new instance of the <see cref="SiteDefinitionCollection"/> class.
-		/// </summary>
-		public HostCollection()
-		{
-		}
-
 		public override ConfigurationElementCollectionType CollectionType
 		{
 			get { return ConfigurationElementCollectionType.AddRemoveClearMap; }

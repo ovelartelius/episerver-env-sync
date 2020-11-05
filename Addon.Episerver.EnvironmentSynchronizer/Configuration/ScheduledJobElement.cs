@@ -1,11 +1,10 @@
 ﻿using System.Configuration;
 
-namespace Addon.Episerver.EnvironmentSynchronizer
+namespace Addon.Episerver.EnvironmentSynchronizer.Configuration
 {
     public class ScheduledJobElement : ConfigurationElement
     {
 	    [ConfigurationProperty("Id", IsRequired = false)]
-	    //[StringValidator(InvalidCharacters = "~!@#$%^&()[]{}/;'\"|\\")]
 	    public string Id
 	    {
 		    get => (string)this["Id"];

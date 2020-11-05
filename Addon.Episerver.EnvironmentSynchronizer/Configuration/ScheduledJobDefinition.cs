@@ -1,6 +1,6 @@
-﻿namespace Addon.Episerver.EnvironmentSynchronizer.Models
+﻿namespace Addon.Episerver.EnvironmentSynchronizer.Configuration
 {
-	public class Job
+	public class ScheduledJobDefinition
 	{
 		public string Id { get; set; }
 		public string Name { get;set; }
