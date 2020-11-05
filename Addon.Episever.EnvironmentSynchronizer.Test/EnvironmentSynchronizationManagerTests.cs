@@ -3,7 +3,7 @@ using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Collections.Generic;
 
-namespace Addon.Episever.EnvironmentSynchronizer.Test
+namespace Addon.Episerver.EnvironmentSynchronizer.Test
 {
     [TestClass]
     public class EnvironmentSynchronizationManagerTests
