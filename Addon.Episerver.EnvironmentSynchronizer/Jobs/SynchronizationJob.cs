@@ -42,7 +42,7 @@ namespace Addon.Episerver.EnvironmentSynchronizer.Jobs
 
 		public override string ToString()
 		{
-			return $"Updated SiteDefinitions. {Duration}ms on {Environment.MachineName}.";
+			return $"Ran environment synchronization job. {Duration}ms on {Environment.MachineName}.";
 		}
 	}
 }
