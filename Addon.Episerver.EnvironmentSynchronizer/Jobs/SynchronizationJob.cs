@@ -7,7 +7,11 @@ using EPiServer.Scheduler;
 
 namespace Addon.Episerver.EnvironmentSynchronizer.Jobs
 {
-	[ScheduledPlugIn(DisplayName = "Environment synchronization", SortIndex = 100)]
+	[ScheduledPlugIn(
+		DisplayName = "Environment Synchronization", 
+		Description = "Ensures that content and settings that are stored in the databases are corrected given the current environment. This is helpful after a content synchronization between different Episerver environments. https://github.com/ovelartelius/episerver-env-sync", 
+		SortIndex = 100)
+	]
 	public class SynchronizationJob : ScheduledJobBase
 	{
 		private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
