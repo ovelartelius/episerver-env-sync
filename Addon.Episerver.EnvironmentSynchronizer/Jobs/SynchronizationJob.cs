@@ -1,7 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Reflection;
-using EPiServer.Logging.Compatibility;
+using EPiServer.Logging;
 using EPiServer.PlugIn;
 using EPiServer.Scheduler;
 
@@ -14,10 +13,10 @@ namespace Addon.Episerver.EnvironmentSynchronizer.Jobs
 	]
 	public class SynchronizationJob : ScheduledJobBase
 	{
-		private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-		private readonly EnvironmentSynchronizationManager _environmentSynchronizationManager;
+		private static readonly ILogger Logger = LogManager.GetLogger();
+		private readonly IEnvironmentSynchronizationManager _environmentSynchronizationManager;
 
-		public SynchronizationJob(EnvironmentSynchronizationManager environmentSynchronizationManager)
+		public SynchronizationJob(IEnvironmentSynchronizationManager environmentSynchronizationManager)
 		{
 			IsStoppable = false;
 			_environmentSynchronizationManager = environmentSynchronizationManager;
@@ -35,7 +34,7 @@ namespace Addon.Episerver.EnvironmentSynchronizer.Jobs
 			}
 			catch (Exception ex)
 			{
-				Logger.Error(ex);
+				Logger.Error("Error when run Environment Synchronization job.", ex);
 			}
 
 			tmr.Stop();

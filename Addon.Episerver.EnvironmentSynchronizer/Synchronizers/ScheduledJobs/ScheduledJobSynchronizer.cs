@@ -11,7 +11,7 @@ namespace Addon.Episerver.EnvironmentSynchronizer.Synchronizers.ScheduledJobs
 	[ServiceConfiguration(typeof(IEnvironmentSynchronizer))]
 	public class ScheduledJobSynchronizer : IEnvironmentSynchronizer
     {
-		private static readonly ILogger _logger = LogManager.GetLogger();
+		private static readonly ILogger Logger = LogManager.GetLogger();
 		private readonly IScheduledJobRepository _scheduledJobRepository;
 		private readonly ConfigurationReader _configurationReader;
 
@@ -19,13 +19,15 @@ namespace Addon.Episerver.EnvironmentSynchronizer.Synchronizers.ScheduledJobs
 			IScheduledJobRepository scheduledJobRepository,
 			ConfigurationReader configurationReader)
         {
+            Logger.Information("ScheduledJobSynchronizer initialized.");
 			_scheduledJobRepository = scheduledJobRepository;
 			_configurationReader = configurationReader;
 		}
 
 		public void Synchronize(string environmentName)
         {
-			var syncConfiguration = _configurationReader.ReadConfiguration();
+	        Logger.Information("ScheduledJobSynchronizer start synchronization.");
+            var syncConfiguration = _configurationReader.ReadConfiguration();
 
             if(syncConfiguration.ScheduledJobs == null)
             {
@@ -70,15 +72,24 @@ namespace Addon.Episerver.EnvironmentSynchronizer.Synchronizers.ScheduledJobs
         {
             ScheduledJob existingJob = null;
             var extraInfoMessage = string.Empty;
-            if (!string.IsNullOrEmpty(job.Id))
+
+            try
             {
-                existingJob = existingScheduledJobs.FirstOrDefault(x => x.ID == Guid.Parse(job.Id));
-                extraInfoMessage = $"Id = {job.Id}";
+	            if (!string.IsNullOrEmpty(job.Id))
+	            {
+		            existingJob = existingScheduledJobs.FirstOrDefault(x => x.ID == Guid.Parse(job.Id));
+		            extraInfoMessage = $"Id = {job.Id}";
+	            }
+	            else if (!string.IsNullOrEmpty(job.Name))
+	            {
+		            existingJob = existingScheduledJobs.FirstOrDefault(x => x.Name == job.Name || x.AssemblyName == job.Name);
+		            extraInfoMessage = $"Name/AssemblyName = {job.Name}";
+	            }
             }
-            else if (!string.IsNullOrEmpty(job.Name))
+            catch (Exception ex)
             {
-                existingJob = existingScheduledJobs.FirstOrDefault(x => x.Name == job.Name || x.AssemblyName == job.Name);
-                extraInfoMessage = $"Name/AssemblyName = {job.Name}";
+	            extraInfoMessage = $"id=\"{job.Id}\" name=\"{job.Name}\"";
+                Logger.Error($"Error when try to loaf schedulejob id=\"{job.Id}\" name=\"{job.Name}\".", ex);
             }
 
             if (existingJob != null)
@@ -88,7 +99,7 @@ namespace Addon.Episerver.EnvironmentSynchronizer.Synchronizers.ScheduledJobs
             }
             else
             {
-                _logger.Warning($"Could not find scheduled job with {extraInfoMessage}");
+                Logger.Warning($"Could not find scheduled job with {extraInfoMessage}");
             }
         }
     }

@@ -13,7 +13,7 @@ namespace Addon.Episerver.EnvironmentSynchronizer.Configuration
 
 	public class ConfigurationReader : IConfigurationReader
 	{
-		private static readonly ILogger _logger = LogManager.GetLogger();
+		private static readonly ILogger Logger = LogManager.GetLogger();
 
 		public SynchronizationData ReadConfiguration()
 		{
@@ -28,6 +28,7 @@ namespace Addon.Episerver.EnvironmentSynchronizer.Configuration
 			try
 			{
 				syncData.RunAsInitializationModule = config.Settings.RunAsInitializationModule;
+				syncData.RunInitializationModuleEveryStartup = config.Settings.RunInitializationModuleEveryStartup;
 
 				if (config.Settings.SiteDefinitions != null && config.Settings.SiteDefinitions.Count > 0)
 				{
@@ -49,7 +50,7 @@ namespace Addon.Episerver.EnvironmentSynchronizer.Configuration
 				}
 				else
 				{
-					_logger.Information($"Found no site definitions to handle.");
+					Logger.Information($"Found no site definitions to handle.");
 				}
 
 				if (config.Settings.ScheduleJobs != null && config.Settings.ScheduleJobs.Count > 0)
@@ -68,12 +69,12 @@ namespace Addon.Episerver.EnvironmentSynchronizer.Configuration
 				}
 				else
 				{
-					_logger.Information($"Found no schedule jobs to handle.");
+					Logger.Information($"Found no schedule jobs to handle.");
 				}
 			}
 			catch (Exception ex)
 			{
-				_logger.Error($"No configuration found in the web.config. Missing env.synchronizer section.", ex);
+				Logger.Error($"No configuration found in the web.config. Missing env.synchronizer section.", ex);
 			}
 
 			return syncData;

@@ -3,7 +3,7 @@
   <metadata>
     <id>Addon.Episerver.EnvironmentSynchronizer</id>
     <version>$version$</version>
-    <title>Epinova - Environment synchronizer</title>
+    <title>Epinova - Environment Synchronizer</title>
     <authors>Ove Lartelius, Linus Ekström</authors>
 	<owners>Epinova AB</owners>
 	<iconUrl>http://www.epinova.no/favicon.ico</iconUrl>
@@ -11,7 +11,7 @@
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
     <description>Environment synchronizer helps you to set your environment into a known state after synchronizing databases between environments.</description>
     <copyright>Copyright ©  2020</copyright>
-	  <tags>Epinova EpiServer</tags>
+	  <tags>Epinova Episerver</tags>
     <dependencies>
       <dependency id="Castle.Core" version="4.2.1" />
       <dependency id="EPiServer.CMS.AspNet" version="11.1.0" />

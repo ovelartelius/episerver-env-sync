@@ -9,6 +9,6 @@
         /// The name of the current environment.
         /// </summary>
         /// <returns>The name of the current environment.</returns>
-        string GetCurrentEnvironementName();
+        string GetCurrentEnvironmentName();
     }
 }
