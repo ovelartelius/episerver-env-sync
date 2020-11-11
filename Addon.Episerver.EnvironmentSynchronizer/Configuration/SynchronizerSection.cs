@@ -11,6 +11,13 @@ namespace Addon.Episerver.EnvironmentSynchronizer.Configuration
 			set => this["runAsInitializationModule"] = value;
 		}
 
+		[ConfigurationProperty("runInitializationModuleEveryStartup", IsRequired = false)]
+		public bool RunInitializationModuleEveryStartup
+		{
+			get => (bool)this["runInitializationModuleEveryStartup"];
+			set => this["runInitializationModuleEveryStartup"] = value;
+		}
+
 		[ConfigurationProperty("sitedefinitions")]
 		[ConfigurationCollection(typeof(SiteDefinitionCollection), AddItemName = "sitedefinition")]
 		public SiteDefinitionCollection SiteDefinitions

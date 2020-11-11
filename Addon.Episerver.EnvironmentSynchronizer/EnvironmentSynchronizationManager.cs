@@ -1,40 +1,78 @@
-﻿using EPiServer.Logging;
+﻿using System;
+using EPiServer.Logging;
 using EPiServer.ServiceLocation;
 using System.Collections.Generic;
+using System.Configuration;
+using System.Linq;
+using Addon.Episerver.EnvironmentSynchronizer.DynamicData;
 
 namespace Addon.Episerver.EnvironmentSynchronizer
 {
-    public class EnvironmentSynchronizationManager
+	public interface IEnvironmentSynchronizationManager
+	{
+		void Synchronize();
+
+		void Synchronize(string environmentName);
+
+		string GetEnvironmentName();
+	}
+
+	[ServiceConfiguration(ServiceType = typeof(IEnvironmentSynchronizationManager))]
+    public class EnvironmentSynchronizationManager : IEnvironmentSynchronizationManager
     {
-        private static readonly ILogger _logger = LogManager.GetLogger();
+        private static readonly ILogger Logger = LogManager.GetLogger();
         private readonly IEnumerable<IEnvironmentSynchronizer> _environmentSynchronizers;
+        private readonly IEnvironmentSynchronizationStore _environmentSynchronizationStore;
 
         public EnvironmentSynchronizationManager(
-            IEnumerable<IEnvironmentSynchronizer> environmentSynchronizers)
+            IEnumerable<IEnvironmentSynchronizer> environmentSynchronizers, IEnvironmentSynchronizationStore environmentSynchronizationStore)
         {
             _environmentSynchronizers = environmentSynchronizers;
+            _environmentSynchronizationStore = environmentSynchronizationStore;
         }
 
         public void Synchronize()
         {
-            IEnvironmentNameSource environmentNameSource;
-
-            ServiceLocator.Current.TryGetExistingInstance<IEnvironmentNameSource>(out environmentNameSource);
-            string environmentName = environmentNameSource != null ? environmentNameSource.GetCurrentEnvironementName() : string.Empty;
+            string environmentName = GetEnvironmentName();
 
             Synchronize(environmentName);
         }
 
         public void Synchronize(string environmentName)
         {
-            _logger.Information($"Starting environment synchronization for enviroment named: {environmentName}");
+            Logger.Information($"Starting environment synchronization for environment named: {environmentName}");
+
+            if (_environmentSynchronizers is null || !_environmentSynchronizers.Any())
+            {
+	            Logger.Information($"No synchronizers found.");
+            }
 
             foreach (var environmentSynchronizer in _environmentSynchronizers)
             {
                 environmentSynchronizer.Synchronize(environmentName);
             }
 
-            _logger.Information($"Starting environment synchronization for enviroment named: {environmentName}");
+            Logger.Information($"Finished environment synchronization for environment named: {environmentName}");
+
+            var environmentSynchronizationFlag = new EnvironmentSynchronizationFlag
+            {
+                TimeStamp = DateTime.Now,
+                Environment = environmentName
+            };
+            _environmentSynchronizationStore.SetFlag(environmentSynchronizationFlag);
+        }
+
+        public string GetEnvironmentName()
+        {
+	        ServiceLocator.Current.TryGetExistingInstance<IEnvironmentNameSource>(out var environmentNameSource);
+	        var environmentName = environmentNameSource != null ? environmentNameSource.GetCurrentEnvironmentName() : string.Empty;
+
+	        if (string.IsNullOrEmpty(environmentName))
+	        {
+                environmentName = ConfigurationManager.AppSettings["episerver:EnvironmentName"];
+            }
+
+	        return environmentName;
         }
     }
 }

@@ -14,6 +14,7 @@ namespace Addon.Episerver.EnvironmentSynchronizer.Models
 	public class SynchronizationData : ISynchronizationData
 	{
 		public bool RunAsInitializationModule { get; set; }
+		public bool RunInitializationModuleEveryStartup { get; set; }
 		public List<SiteDefinition> SiteDefinitions { get; set; }
 		public List<ScheduledJobDefinition> ScheduledJobs { get; set; }
 	}

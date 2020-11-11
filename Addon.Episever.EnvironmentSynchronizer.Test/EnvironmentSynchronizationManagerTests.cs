@@ -2,6 +2,7 @@
 using Microsoft.VisualStudio.TestTools.UnitTesting;
 using Moq;
 using System.Collections.Generic;
+using Addon.Episerver.EnvironmentSynchronizer.DynamicData;
 
 namespace Addon.Episerver.EnvironmentSynchronizer.Test
 {
@@ -14,9 +15,11 @@ namespace Addon.Episerver.EnvironmentSynchronizer.Test
             var synchronizer1 = new Mock<IEnvironmentSynchronizer>();
             var synchronizer2 = new Mock<IEnvironmentSynchronizer>();
 
+            var store = new Mock<IEnvironmentSynchronizationStore>();
+
             var synchronizers = new List<IEnvironmentSynchronizer>() { synchronizer1.Object , synchronizer2.Object};
 
-            var _subject = new EnvironmentSynchronizationManager(synchronizers);
+            var _subject = new EnvironmentSynchronizationManager(synchronizers, store.Object);
 
             _subject.Synchronize();
 
@@ -28,10 +31,11 @@ namespace Addon.Episerver.EnvironmentSynchronizer.Test
         public void Should_Provide_Current_Environment_Name_To_Synchronizers()
         {
             var synchronizer1 = new Mock<IEnvironmentSynchronizer>();
+            var store = new Mock<IEnvironmentSynchronizationStore>();
 
             var synchronizers = new List<IEnvironmentSynchronizer>() { synchronizer1.Object };
 
-            var _subject = new EnvironmentSynchronizationManager(synchronizers);
+            var _subject = new EnvironmentSynchronizationManager(synchronizers, store.Object);
 
             string environmentName = "abc";
 
