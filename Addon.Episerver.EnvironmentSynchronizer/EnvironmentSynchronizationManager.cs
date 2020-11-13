@@ -54,12 +54,12 @@ namespace Addon.Episerver.EnvironmentSynchronizer
 
             Logger.Information($"Finished environment synchronization for environment named: {environmentName}");
 
-            var environmentSynchronizationFlag = new EnvironmentSynchronizationFlag
+            var environmentSynchronizationStamp = new EnvironmentSynchronizationStamp
             {
                 TimeStamp = DateTime.Now,
                 Environment = environmentName
             };
-            _environmentSynchronizationStore.SetFlag(environmentSynchronizationFlag);
+            _environmentSynchronizationStore.SetStamp(environmentSynchronizationStamp);
         }
 
         public string GetEnvironmentName()

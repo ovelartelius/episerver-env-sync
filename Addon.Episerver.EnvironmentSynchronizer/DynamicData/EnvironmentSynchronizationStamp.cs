@@ -9,7 +9,7 @@ namespace Addon.Episerver.EnvironmentSynchronizer.DynamicData
 	[DebuggerDisplay("{Environment} {TimeStamp} {Environment}")]
 	[Serializable]
 	[EPiServerDataStore(AutomaticallyRemapStore = true)]
-	public class EnvironmentSynchronizationFlag : ISerializable, IDynamicData
+	public class EnvironmentSynchronizationStamp : ISerializable, IDynamicData
 	{
 		public Identity Id { get; set; }
 

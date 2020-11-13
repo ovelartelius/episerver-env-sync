@@ -64,6 +64,7 @@ namespace Addon.Episerver.EnvironmentSynchronizer.Synchronizers.ScheduledJobs
                 }
 
                 existingScheduledJob.IsEnabled = job.IsEnabled;
+                Logger.Debug($"Set {existingScheduledJob.Name} ({existingScheduledJob.ID}) to IsEnabled={job.IsEnabled}. After * (wildcard) spec.");
                 _scheduledJobRepository.Save(existingScheduledJob);
             }
         }
@@ -95,6 +96,7 @@ namespace Addon.Episerver.EnvironmentSynchronizer.Synchronizers.ScheduledJobs
             if (existingJob != null)
             {
                 existingJob.IsEnabled = job.IsEnabled;
+                Logger.Debug($"Set {existingJob.Name} ({existingJob.ID}) to IsEnabled={job.IsEnabled}.");
                 _scheduledJobRepository.Save(existingJob);
             }
             else

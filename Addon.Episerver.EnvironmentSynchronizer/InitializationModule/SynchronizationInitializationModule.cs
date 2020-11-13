@@ -30,11 +30,11 @@ namespace Addon.Episerver.EnvironmentSynchronizer.InitializationModule
 				{
 					Logger.Information($"Environment Synchronizer found RunInitializationModuleEveryStartup=false");
 					var store = ServiceLocator.Current.GetInstance<EnvironmentSynchronizationStore>();
-					var flag = store.GetFlag();
-					if (flag != null && flag.Environment == environmentSynchronizationManager.GetEnvironmentName())
+					var stamp = store.GetStamp();
+					if (stamp != null && stamp.Environment == environmentSynchronizationManager.GetEnvironmentName())
 					{
 						runInitialization = false;
-						Logger.Information($"Environment Synchronizer will not run. Flag match the current environment {flag.Environment}");
+						Logger.Information($"Environment Synchronizer will not run. Stamp match the current environment {stamp.Environment}");
 					}
 				}
 

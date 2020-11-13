@@ -13,34 +13,34 @@ namespace Addon.Episerver.EnvironmentSynchronizer.DynamicData
 
 		public EnvironmentSynchronizationStore()
 		{
-			_store = DynamicDataStoreFactory.Instance.GetStore(typeof(EnvironmentSynchronizationFlag));
+			_store = DynamicDataStoreFactory.Instance.GetStore(typeof(EnvironmentSynchronizationStamp));
 			if (_store == null)
 			{
-				_store = DynamicDataStoreFactory.Instance.CreateStore(typeof(EnvironmentSynchronizationFlag));
-				Logger.Information("Create data store for 'EnvironmentSynchronizationFlag'.");
+				_store = DynamicDataStoreFactory.Instance.CreateStore(typeof(EnvironmentSynchronizationStamp));
+				Logger.Information("Create data store for 'EnvironmentSynchronizationStamp'.");
 			}
 		}
 
-		public EnvironmentSynchronizationFlag GetFlag()
+		public EnvironmentSynchronizationStamp GetStamp()
 		{
-			var flag = _store.Items<EnvironmentSynchronizationFlag>().FirstOrDefault();
-			return flag;
+			var stamp = _store.Items<EnvironmentSynchronizationStamp>().FirstOrDefault();
+			return stamp;
 		}
 
-		public void SetFlag(EnvironmentSynchronizationFlag flag)
+		public void SetStamp(EnvironmentSynchronizationStamp stamp)
 		{
-			var existingFlag = _store.Items<EnvironmentSynchronizationFlag>().FirstOrDefault();
-			if (existingFlag != null)
+			var existingStamp = _store.Items<EnvironmentSynchronizationStamp>().FirstOrDefault();
+			if (existingStamp != null)
 			{
-				existingFlag.TimeStamp = flag.TimeStamp;
-				existingFlag.Environment = flag.Environment;
-				_store.Save(existingFlag);
+				existingStamp.TimeStamp = stamp.TimeStamp;
+				existingStamp.Environment = stamp.Environment;
+				_store.Save(existingStamp);
 			}
 			else
 			{
-				_store.Save(flag);
+				_store.Save(stamp);
 			}
-			Logger.Information("Saved environment synchronization flag to data store.");
+			Logger.Information("Saved environment synchronization stamp to data store.");
 		}
 	}
 }

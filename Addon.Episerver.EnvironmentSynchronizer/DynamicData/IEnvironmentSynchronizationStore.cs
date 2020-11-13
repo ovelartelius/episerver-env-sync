@@ -2,8 +2,8 @@
 {
 	public interface IEnvironmentSynchronizationStore
 	{
-		EnvironmentSynchronizationFlag GetFlag();
+		EnvironmentSynchronizationStamp GetStamp();
 
-		void SetFlag(EnvironmentSynchronizationFlag flag);
+		void SetStamp(EnvironmentSynchronizationStamp stamp);
 	}
 }
