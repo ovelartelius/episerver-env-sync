@@ -12,7 +12,7 @@ namespace Addon.Episerver.EnvironmentSynchronizer.Synchronizers.SiteDefinitions
     [ServiceConfiguration(typeof(IEnvironmentSynchronizer))]
     public class SiteDefinitionSynchronizer : IEnvironmentSynchronizer
     {
-        private static readonly ILogger _logger = LogManager.GetLogger();
+        private static readonly ILogger Logger = LogManager.GetLogger();
         private readonly ISiteDefinitionRepository _siteDefinitionRepository;
         private readonly ConfigurationReader _configurationReader;
 
@@ -20,6 +20,7 @@ namespace Addon.Episerver.EnvironmentSynchronizer.Synchronizers.SiteDefinitions
             ISiteDefinitionRepository siteDefinitionRepository,
             ConfigurationReader configurationReader)
         {
+	        Logger.Information("SiteDefinitionSynchronizer initialized.");
             _siteDefinitionRepository = siteDefinitionRepository;
             _configurationReader = configurationReader;
         }
@@ -30,7 +31,7 @@ namespace Addon.Episerver.EnvironmentSynchronizer.Synchronizers.SiteDefinitions
 
             if (syncConfiguration.SiteDefinitions == null || !syncConfiguration.SiteDefinitions.Any())
             {
-                _logger.Information("No site definitions found to synchronize.");
+                Logger.Information("No site definitions found to synchronize.");
                 return;
             }
 
@@ -40,15 +41,15 @@ namespace Addon.Episerver.EnvironmentSynchronizer.Synchronizers.SiteDefinitions
             {
                 var updatedSites = MergeSiteDefinitions(syncConfiguration.SiteDefinitions);
 
-                _logger.Information($"Updated total of {updatedSites} sites.");
+                Logger.Information($"Updated total of {updatedSites} sites.");
             }
             catch (Exception ex)
             {
-                _logger.Error("An excetion occured when trying to synchronize site definitions", ex);
+                Logger.Error("An excetion occured when trying to synchronize site definitions", ex);
             }
 
             stopwatch.Stop();
-            _logger.Information($"Synchronize site definitions took {stopwatch.ElapsedMilliseconds}ms.");
+            Logger.Information($"Synchronize site definitions took {stopwatch.ElapsedMilliseconds}ms.");
         }
 
         private int MergeSiteDefinitions(IEnumerable<SiteDefinition> siteDefinitionsToUpdate)
@@ -68,11 +69,11 @@ namespace Addon.Episerver.EnvironmentSynchronizer.Synchronizers.SiteDefinitions
 
                     _siteDefinitionRepository.Save(site);
                     updatedSites++;
-                    _logger.Information($"Updated {siteDefinitionToUpdate.Name} to site URL {siteDefinitionToUpdate.SiteUrl} and {siteDefinitionToUpdate.Hosts.Count} hostnames.");
+                    Logger.Information($"Updated {siteDefinitionToUpdate.Name} to site URL {siteDefinitionToUpdate.SiteUrl} and {siteDefinitionToUpdate.Hosts.Count} hostnames.");
                 }
                 else
                 {
-                    _logger.Warning($"Could not find site {siteDefinitionToUpdate.Name} or site already has site URL {siteDefinitionToUpdate.SiteUrl}.");
+                    Logger.Warning($"Could not find site {siteDefinitionToUpdate.Name} or site already has site URL {siteDefinitionToUpdate.SiteUrl}.");
                 }
             }
 

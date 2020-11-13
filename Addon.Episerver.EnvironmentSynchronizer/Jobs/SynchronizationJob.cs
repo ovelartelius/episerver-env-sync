@@ -1,19 +1,22 @@
 ﻿using System;
 using System.Diagnostics;
-using System.Reflection;
-using EPiServer.Logging.Compatibility;
+using EPiServer.Logging;
 using EPiServer.PlugIn;
 using EPiServer.Scheduler;
 
 namespace Addon.Episerver.EnvironmentSynchronizer.Jobs
 {
-	[ScheduledPlugIn(DisplayName = "Environment synchronization", SortIndex = 100)]
+	[ScheduledPlugIn(
+		DisplayName = "Environment Synchronization", 
+		Description = "Ensures that content and settings that are stored in the databases are corrected given the current environment. This is helpful after a content synchronization between different Episerver environments. https://github.com/ovelartelius/episerver-env-sync", 
+		SortIndex = 100)
+	]
 	public class SynchronizationJob : ScheduledJobBase
 	{
-		private static readonly ILog Logger = LogManager.GetLogger(MethodBase.GetCurrentMethod().DeclaringType);
-		private readonly EnvironmentSynchronizationManager _environmentSynchronizationManager;
+		private static readonly ILogger Logger = LogManager.GetLogger();
+		private readonly IEnvironmentSynchronizationManager _environmentSynchronizationManager;
 
-		public SynchronizationJob(EnvironmentSynchronizationManager environmentSynchronizationManager)
+		public SynchronizationJob(IEnvironmentSynchronizationManager environmentSynchronizationManager)
 		{
 			IsStoppable = false;
 			_environmentSynchronizationManager = environmentSynchronizationManager;
@@ -31,7 +34,7 @@ namespace Addon.Episerver.EnvironmentSynchronizer.Jobs
 			}
 			catch (Exception ex)
 			{
-				Logger.Error(ex);
+				Logger.Error("Error when run Environment Synchronization job.", ex);
 			}
 
 			tmr.Stop();
