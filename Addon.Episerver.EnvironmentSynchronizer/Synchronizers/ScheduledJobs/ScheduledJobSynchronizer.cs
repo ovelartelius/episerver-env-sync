@@ -26,7 +26,7 @@ namespace Addon.Episerver.EnvironmentSynchronizer.Synchronizers.ScheduledJobs
 
 		public void Synchronize(string environmentName)
         {
-	        Logger.Information("ScheduledJobSynchronizer start synchronization.");
+	        Logger.Information("ScheduledJobSynchronizer starting synchronization.");
             var syncConfiguration = _configurationReader.ReadConfiguration();
 
             if(syncConfiguration.ScheduledJobs == null)
