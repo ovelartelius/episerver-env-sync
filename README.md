@@ -75,7 +75,7 @@ namespace Yoursite.Infrastructure.Environments
 If you don´t implement the logic specified above. The DXP variable ´episerver:EnvironmentName´ will be used. More information about the DXP environments and the appsetting can be found on [https://world.episerver.com/documentation/developer-guides/digital-experience-platform/development-considerations/environment-configurations/](https://world.episerver.com/documentation/developer-guides/digital-experience-platform/development-considerations/environment-configurations/)
 
 ### runAsInitializationModule
-Tells the synchronizer that you want to run it as InitializationModule.
+Tells the synchronizer that you want to run it as an InitializationModule.
 
 ### runInitializationModuleEveryStartup
 Tells the synchronizer that you will run synchronization with InitializationModule every time the application is starting up. If this is set to `false`, that is deafult if this attribute is not set. It will check for a flag that tells the synchronizer if it has already synchronized the current environment or not. So it will only run if the flag specifies a value of a environment that is not equal to the current environment. This logic will only be used for the InitializationModule logic. The schedule job will always synchronize.  
