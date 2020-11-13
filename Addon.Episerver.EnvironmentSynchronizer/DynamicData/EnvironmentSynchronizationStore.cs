@@ -5,13 +5,6 @@ using EPiServer.ServiceLocation;
 
 namespace Addon.Episerver.EnvironmentSynchronizer.DynamicData
 {
-	public interface IEnvironmentSynchronizationStore
-	{
-		EnvironmentSynchronizationFlag GetFlag();
-
-		void SetFlag(EnvironmentSynchronizationFlag flag);
-	}
-
 	[ServiceConfiguration(ServiceType = typeof(IEnvironmentSynchronizationStore))]
 	public class EnvironmentSynchronizationStore: IEnvironmentSynchronizationStore
 	{

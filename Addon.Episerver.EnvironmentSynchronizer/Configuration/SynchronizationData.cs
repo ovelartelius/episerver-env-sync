@@ -4,13 +4,6 @@ using System.Collections.Generic;
 
 namespace Addon.Episerver.EnvironmentSynchronizer.Models
 {
-    public interface ISynchronizationData
-	{
-		bool RunAsInitializationModule { get; set; }
-		List<SiteDefinition> SiteDefinitions { get; set; }
-		List<ScheduledJobDefinition> ScheduledJobs { get; set; }
-	}
-
 	public class SynchronizationData : ISynchronizationData
 	{
 		public bool RunAsInitializationModule { get; set; }

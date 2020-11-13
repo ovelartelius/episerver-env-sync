@@ -6,11 +6,6 @@ using System.Collections.Generic;
 
 namespace Addon.Episerver.EnvironmentSynchronizer.Configuration
 {
-    public interface IConfigurationReader
-	{
-		SynchronizationData ReadConfiguration();
-	}
-
 	public class ConfigurationReader : IConfigurationReader
 	{
 		private static readonly ILogger Logger = LogManager.GetLogger();

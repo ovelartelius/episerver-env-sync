@@ -2,11 +2,6 @@
 
 namespace Addon.Episerver.EnvironmentSynchronizer.Configuration
 {
-	public interface ISynchronizerConfiguration
-	{
-		SynchronizerSection Settings { get; }
-	}
-
 	public class SynchronizerConfiguration : ISynchronizerConfiguration
 	{
 		public SynchronizerSection Settings => GetSection<SynchronizerSection>("env.synchronizer");

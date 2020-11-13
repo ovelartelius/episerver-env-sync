@@ -141,8 +141,12 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Configuration\ConfigurationReader.cs" />
+    <Compile Include="Configuration\IConfigurationReader.cs" />
+    <Compile Include="Configuration\ISynchronizationData.cs" />
+    <Compile Include="Configuration\ISynchronizerConfiguration.cs" />
     <Compile Include="DynamicData\EnvironmentSynchronizationFlag.cs" />
     <Compile Include="DynamicData\EnvironmentSynchronizationStore.cs" />
+    <Compile Include="DynamicData\IEnvironmentSynchronizationStore.cs" />
     <Compile Include="EnvironmentSynchronizationManager.cs" />
     <Compile Include="EnvironmentHelper.cs" />
     <Compile Include="EnvironmentNames.cs" />
