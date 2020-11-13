@@ -38,7 +38,7 @@ namespace Addon.Episerver.EnvironmentSynchronizer.InitializationModule
 					}
 				}
 
-				if (!runInitialization) return;
+				if (!runInitialization) { return; }
 
 				environmentSynchronizationManager.Synchronize();
 			}
