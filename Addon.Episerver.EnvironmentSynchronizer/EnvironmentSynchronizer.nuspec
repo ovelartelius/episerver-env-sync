@@ -2,7 +2,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2013/05/nuspec.xsd">
   <metadata>
     <id>Addon.Episerver.EnvironmentSynchronizer</id>
-    <version>$version$</version>
+    <version>0.2.1.2</version>
     <title>Epinova - Environment Synchronizer</title>
     <authors>Ove Lartelius, Linus Ekström</authors>
 	<owners>Epinova AB</owners>
