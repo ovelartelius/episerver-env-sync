@@ -33,5 +33,11 @@ namespace Addon.Episerver.EnvironmentSynchronizer.Configuration
 	        get => (HostCollection)base["hosts"];
         }
 
+        [ConfigurationProperty("Force", IsRequired = false)]
+        public bool Force
+        {
+	        get => (bool)this["Force"];
+	        set => this["Force"] = value;
+        }
     }
 }
