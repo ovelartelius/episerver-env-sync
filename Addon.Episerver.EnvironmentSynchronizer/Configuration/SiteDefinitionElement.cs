@@ -32,6 +32,5 @@ namespace Addon.Episerver.EnvironmentSynchronizer.Configuration
         {
 	        get => (HostCollection)base["hosts"];
         }
-
     }
 }

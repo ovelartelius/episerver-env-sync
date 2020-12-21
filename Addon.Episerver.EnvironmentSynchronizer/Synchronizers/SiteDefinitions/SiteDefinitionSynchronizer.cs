@@ -59,11 +59,15 @@ namespace Addon.Episerver.EnvironmentSynchronizer.Synchronizers.SiteDefinitions
 
             foreach (var siteDefinitionToUpdate in siteDefinitionsToUpdate)
             {
-                //Update the site definition if it doesn't have the same value for SiteUrl 
-                var site = existingSites.FirstOrDefault(s => s.Name == siteDefinitionToUpdate.Name && s.SiteUrl != siteDefinitionToUpdate.SiteUrl);
+	            SiteDefinition site = GetExistingSiteDefinition(existingSites, siteDefinitionToUpdate);
                 if (site != null)
                 {
                     site = site.CreateWritableClone();
+                    if (!string.IsNullOrEmpty(siteDefinitionToUpdate.Name) && site.Name != siteDefinitionToUpdate.Name)
+                    {
+                        // Will set the name of the site to the provided Name if Id exist and Name is specified and different from the found existing site.
+	                    site.Name = siteDefinitionToUpdate.Name;
+                    }
                     site.SiteUrl = siteDefinitionToUpdate.SiteUrl;
                     site.Hosts = siteDefinitionToUpdate.Hosts;
 
@@ -78,6 +82,24 @@ namespace Addon.Episerver.EnvironmentSynchronizer.Synchronizers.SiteDefinitions
             }
 
             return updatedSites;
+        }
+
+        private SiteDefinition GetExistingSiteDefinition(IEnumerable<SiteDefinition> existingSites, SiteDefinition siteDefinitionToUpdate)
+        {
+            SiteDefinition siteDefinition = null;
+
+            if (siteDefinitionToUpdate.Id != Guid.Empty)
+            {
+                //Update the site definition if it doesn't have the same value for SiteUrl 
+                siteDefinition = existingSites.FirstOrDefault(s => s.Id == siteDefinitionToUpdate.Id && s.SiteUrl != siteDefinitionToUpdate.SiteUrl);
+            }
+            else
+            {
+                //Update the site definition if it doesn't have the same value for SiteUrl 
+                siteDefinition = existingSites.FirstOrDefault(s => s.Name == siteDefinitionToUpdate.Name && s.SiteUrl != siteDefinitionToUpdate.SiteUrl);
+            }
+
+            return siteDefinition;
         }
     }
 }
