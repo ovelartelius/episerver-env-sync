@@ -72,7 +72,12 @@ namespace Yoursite.Infrastructure.Environments
 }
 ``` 
 ### DXP variable episerver:EnvironmentName support
-If you don´t implement the logic specified above. The DXP variable ´episerver:EnvironmentName´ will be used. More information about the DXP environments and the appsetting can be found on [https://world.episerver.com/documentation/developer-guides/digital-experience-platform/development-considerations/environment-configurations/](https://world.episerver.com/documentation/developer-guides/digital-experience-platform/development-considerations/environment-configurations/)
+If you don´t implement the logic specified above. The DXP variable ´episerver:EnvironmentName´ will be used. More information about the DXP environments and the appsetting can be found on [https://world.episerver.com/documentation/developer-guides/digital-experience-platform/development-considerations/environment-configurations/](https://world.episerver.com/documentation/developer-guides/digital-experience-platform/development-considerations/environment-configurations/)  
+So if you don´t set this variable yourself you will get the following values:  
+1. In your local environment: "" (empty value)
+2. In the integration environment: "Integration"  
+3. In the preproduction environment: "Preproduction"  
+4. In the production environment: "Production"  
 
 ### runAsInitializationModule
 Tells the synchronizer that you want to run it as an InitializationModule.
