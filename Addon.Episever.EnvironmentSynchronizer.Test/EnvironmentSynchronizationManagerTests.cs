@@ -21,7 +21,7 @@ namespace Addon.Episerver.EnvironmentSynchronizer.Test
 
             var _subject = new EnvironmentSynchronizationManager(synchronizers, store.Object);
 
-            _subject.Synchronize();
+            var resultLog = _subject.Synchronize();
 
             synchronizer1.Verify(m => m.Synchronize(It.IsAny<string>()));
             synchronizer2.Verify(m => m.Synchronize(It.IsAny<string>()));
@@ -39,9 +39,11 @@ namespace Addon.Episerver.EnvironmentSynchronizer.Test
 
             string environmentName = "abc";
 
-            _subject.Synchronize(environmentName);
+            var resultLog = _subject.Synchronize(environmentName);
 
             synchronizer1.Verify(m => m.Synchronize(environmentName));
         }
+
+
     }
 }

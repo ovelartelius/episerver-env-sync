@@ -6,6 +6,7 @@ using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Text;
 
 namespace Addon.Episerver.EnvironmentSynchronizer.Synchronizers.SiteDefinitions
 {
@@ -14,25 +15,27 @@ namespace Addon.Episerver.EnvironmentSynchronizer.Synchronizers.SiteDefinitions
     {
         private static readonly ILogger Logger = LogManager.GetLogger();
         private readonly ISiteDefinitionRepository _siteDefinitionRepository;
-        private readonly ConfigurationReader _configurationReader;
+        private readonly IConfigurationReader _configurationReader;
+        private StringBuilder resultLog = new StringBuilder();
 
         public SiteDefinitionSynchronizer(
             ISiteDefinitionRepository siteDefinitionRepository,
-            ConfigurationReader configurationReader)
+            IConfigurationReader configurationReader)
         {
 	        Logger.Information("SiteDefinitionSynchronizer initialized.");
             _siteDefinitionRepository = siteDefinitionRepository;
             _configurationReader = configurationReader;
         }
 
-        public void Synchronize(string environmentName)
+        public string Synchronize(string environmentName)
         {
             var syncConfiguration = _configurationReader.ReadConfiguration();
 
             if (syncConfiguration.SiteDefinitions == null || !syncConfiguration.SiteDefinitions.Any())
             {
                 Logger.Information("No site definitions found to synchronize.");
-                return;
+                resultLog.AppendLine("No site definitions found to synchronize.<br />");
+                return resultLog.ToString();
             }
 
             var stopwatch = Stopwatch.StartNew();
@@ -42,14 +45,18 @@ namespace Addon.Episerver.EnvironmentSynchronizer.Synchronizers.SiteDefinitions
                 var updatedSites = MergeSiteDefinitions(syncConfiguration.SiteDefinitions);
 
                 Logger.Information($"Updated total of {updatedSites} sites.");
+                resultLog.AppendLine($"Updated total of {updatedSites} sites.<br />");
             }
             catch (Exception ex)
             {
-                Logger.Error("An excetion occured when trying to synchronize site definitions", ex);
+                Logger.Error("An exception occured when trying to synchronize site definitions", ex);
+                resultLog.AppendLine($"An exception occured when trying to synchronize site definitions: {ex.Message}<br />");
             }
 
             stopwatch.Stop();
             Logger.Information($"Synchronize site definitions took {stopwatch.ElapsedMilliseconds}ms.");
+
+            return resultLog.ToString();
         }
 
         private int MergeSiteDefinitions(IEnumerable<SiteDefinition> siteDefinitionsToUpdate)
@@ -74,10 +81,12 @@ namespace Addon.Episerver.EnvironmentSynchronizer.Synchronizers.SiteDefinitions
                     _siteDefinitionRepository.Save(site);
                     updatedSites++;
                     Logger.Information($"Updated {siteDefinitionToUpdate.Name} to site URL {siteDefinitionToUpdate.SiteUrl} and {siteDefinitionToUpdate.Hosts.Count} hostnames.");
+                    resultLog.AppendLine($"Updated {siteDefinitionToUpdate.Name} to site URL {siteDefinitionToUpdate.SiteUrl} and {siteDefinitionToUpdate.Hosts.Count} hostnames.<br />");
                 }
                 else
                 {
                     Logger.Warning($"Could not find site {siteDefinitionToUpdate.Name} or site already has site URL {siteDefinitionToUpdate.SiteUrl}.");
+                    resultLog.AppendLine($"Could not find site {siteDefinitionToUpdate.Name} or site already has site URL {siteDefinitionToUpdate.SiteUrl}.<br />");
                 }
             }
 
@@ -91,12 +100,12 @@ namespace Addon.Episerver.EnvironmentSynchronizer.Synchronizers.SiteDefinitions
             if (siteDefinitionToUpdate.Id != Guid.Empty)
             {
                 //Update the site definition if it doesn't have the same value for SiteUrl 
-                siteDefinition = existingSites.FirstOrDefault(s => s.Id == siteDefinitionToUpdate.Id && s.SiteUrl != siteDefinitionToUpdate.SiteUrl);
+                siteDefinition = existingSites.FirstOrDefault(s => s.Id == siteDefinitionToUpdate.Id);
             }
             else
             {
                 //Update the site definition if it doesn't have the same value for SiteUrl 
-                siteDefinition = existingSites.FirstOrDefault(s => s.Name == siteDefinitionToUpdate.Name && s.SiteUrl != siteDefinitionToUpdate.SiteUrl);
+                siteDefinition = existingSites.FirstOrDefault(s => s.Name == siteDefinitionToUpdate.Name);
             }
 
             return siteDefinition;

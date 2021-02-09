@@ -150,7 +150,7 @@
     <Compile Include="IEnvironmentNameSource.cs" />
     <Compile Include="IEnvironmentSynchronizer.cs" />
     <Compile Include="InitializationModule\SynchronizationInitializationModule.cs" />
-    <Compile Include="Jobs\SynchronizationJob.cs" />
+    <Compile Include="Jobs\EnvironmentSynchronizationJob.cs" />
     <Compile Include="Configuration\ScheduledJobDefinition.cs" />
     <Compile Include="Configuration\SynchronizationData.cs" />
     <Compile Include="Configuration\SynchronizerConfiguration.cs" />

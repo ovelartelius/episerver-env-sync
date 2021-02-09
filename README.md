@@ -87,9 +87,9 @@ Tells the synchronizer that you will run synchronization with InitializationModu
 This function is implemented for these projects that don´t want the payload of synchronization every time the application starts up.
 
 ### sitedefinition
-**Id** is the GUID that identify the site. If this is provided it will ignore the "Name" attribute.
-**Name** is the name of the sitedefinition that will be updated. If **Id** is not specified it will match the existing SiteDefinition in the Episerver CMS against this name.
-**SiteUrl*** is the SiteUrl that this site should have/use. If the existing SiteDefinition that are found with Id/Name in Episerver CMS already have a SiteUrl. The SiteDefinition in Episerver CMS will not be updated.
+**Id** is the GUID that identify the site. If this is provided it will ignore the "Name" attribute.  
+**Name** is the name of the sitedefinition that will be updated. If **Id** is not specified it will match the existing SiteDefinition in the Episerver CMS against this name.  
+**SiteUrl*** is the SiteUrl that this site should have/use.  
 
 ### hosts
 You need to specify all the hosts that the site needs. When the synchronizer is updating a SiteDefinition it will expect that you have specified all hostnames. So of you in Episerver CMS has a extra host that is not specified in the web.config it will be removed.

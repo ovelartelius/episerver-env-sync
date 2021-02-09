@@ -134,6 +134,8 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="EnvironmentSynchronizationJobTests.cs" />
+    <Compile Include="ScheduleJobSynchronizerTests.cs" />
     <Compile Include="EnvironmentSynchronizationManagerTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
