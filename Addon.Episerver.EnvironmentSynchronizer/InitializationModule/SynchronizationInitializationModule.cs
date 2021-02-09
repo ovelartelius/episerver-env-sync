@@ -48,7 +48,6 @@ namespace Addon.Episerver.EnvironmentSynchronizer.InitializationModule
 				var jobId = ((ScheduledPlugInAttribute)typeof(EnvironmentSynchronizationJob).GetCustomAttributes(typeof(ScheduledPlugInAttribute), true)[0]).GUID;
 				var job = scheduledJobRepository.Get(Guid.Parse(jobId));
 				ScheduleRunNow(job, scheduledJobRepository);
-				//environmentSynchronizationManager.Synchronize();
 			}
 		}
 
