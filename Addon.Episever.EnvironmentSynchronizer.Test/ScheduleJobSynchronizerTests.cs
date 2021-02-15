@@ -14,17 +14,21 @@ namespace Addon.Episerver.EnvironmentSynchronizer.Test
     [TestClass]
     public class ScheduleJobSynchronizerTests
     {
-        [TestMethod]
+	    private List<ScheduledJob> ListOfScheduledJobs()
+	    {
+		    var listOfScheduledJobs = new List<ScheduledJob>();
+		    listOfScheduledJobs.Add(new ScheduledJob { ID = Guid.Parse("5c7d4c45-2e67-4275-a567-e7b6c98429c2"), IsEnabled = false, Name = "Test" });
+		    listOfScheduledJobs.Add(new ScheduledJob { ID = Guid.Parse("147f865b-3360-4804-9640-81e5cfe1d56c"), IsEnabled = false, Name = "Test2" });
+		    return listOfScheduledJobs;
+	    }
+
+		[TestMethod]
         public void SynchronizeOneScheduledJob()
         {
             var scheduleJobRepo = new Mock<IScheduledJobRepository>();
             var configReader = new Mock<IConfigurationReader>();
 
-            var listOfScheduledJobs = new List<ScheduledJob>();
-            listOfScheduledJobs.Add(new ScheduledJob { ID = Guid.Parse("5c7d4c45-2e67-4275-a567-e7b6c98429c2"), IsEnabled = false, Name = "Test" });
-            listOfScheduledJobs.Add(new ScheduledJob { ID = Guid.Parse("147f865b-3360-4804-9640-81e5cfe1d56c"), IsEnabled = false, Name = "Test2" });
-
-            scheduleJobRepo.Setup(x => x.List()).Returns(listOfScheduledJobs);
+            scheduleJobRepo.Setup(x => x.List()).Returns(ListOfScheduledJobs);
 
             var syncData = new SynchronizationData();
             syncData.RunAsInitializationModule = false;
@@ -47,11 +51,7 @@ namespace Addon.Episerver.EnvironmentSynchronizer.Test
 	        var scheduleJobRepo = new Mock<IScheduledJobRepository>();
 	        var configReader = new Mock<IConfigurationReader>();
 
-	        var listOfScheduledJobs = new List<ScheduledJob>();
-	        listOfScheduledJobs.Add(new ScheduledJob { ID = Guid.Parse("5c7d4c45-2e67-4275-a567-e7b6c98429c2"), IsEnabled = false, Name = "Test" });
-	        listOfScheduledJobs.Add(new ScheduledJob { ID = Guid.Parse("147f865b-3360-4804-9640-81e5cfe1d56c"), IsEnabled = false, Name = "Test2" });
-
-	        scheduleJobRepo.Setup(x => x.List()).Returns(listOfScheduledJobs);
+	        scheduleJobRepo.Setup(x => x.List()).Returns(ListOfScheduledJobs);
 
 	        var syncData = new SynchronizationData();
 	        syncData.RunAsInitializationModule = false;
@@ -75,11 +75,7 @@ namespace Addon.Episerver.EnvironmentSynchronizer.Test
 	        var scheduleJobRepo = new Mock<IScheduledJobRepository>();
 	        var configReader = new Mock<IConfigurationReader>();
 
-	        var listOfScheduledJobs = new List<ScheduledJob>();
-	        listOfScheduledJobs.Add(new ScheduledJob { ID = Guid.Parse("5c7d4c45-2e67-4275-a567-e7b6c98429c2"), IsEnabled = false, Name = "Test" });
-	        listOfScheduledJobs.Add(new ScheduledJob { ID = Guid.Parse("147f865b-3360-4804-9640-81e5cfe1d56c"), IsEnabled = false, Name = "Test2" });
-
-	        scheduleJobRepo.Setup(x => x.List()).Returns(listOfScheduledJobs);
+	        scheduleJobRepo.Setup(x => x.List()).Returns(ListOfScheduledJobs);
 
 	        var syncData = new SynchronizationData();
 	        syncData.RunAsInitializationModule = false;
@@ -104,11 +100,7 @@ namespace Addon.Episerver.EnvironmentSynchronizer.Test
 	        var scheduleJobRepo = new Mock<IScheduledJobRepository>();
 	        var configReader = new Mock<IConfigurationReader>();
 
-	        var listOfScheduledJobs = new List<ScheduledJob>();
-	        listOfScheduledJobs.Add(new ScheduledJob { ID = Guid.Parse("5c7d4c45-2e67-4275-a567-e7b6c98429c2"), IsEnabled = false, Name = "Test" });
-	        listOfScheduledJobs.Add(new ScheduledJob { ID = Guid.Parse("147f865b-3360-4804-9640-81e5cfe1d56c"), IsEnabled = false, Name = "Test2" });
-
-	        scheduleJobRepo.Setup(x => x.List()).Returns(listOfScheduledJobs);
+	        scheduleJobRepo.Setup(x => x.List()).Returns(ListOfScheduledJobs);
 
 	        var syncData = new SynchronizationData();
 	        syncData.RunAsInitializationModule = false;
