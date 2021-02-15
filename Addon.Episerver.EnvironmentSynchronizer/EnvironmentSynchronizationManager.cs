@@ -24,7 +24,6 @@ namespace Addon.Episerver.EnvironmentSynchronizer
         private static readonly ILogger Logger = LogManager.GetLogger();
         private readonly IEnumerable<IEnvironmentSynchronizer> _environmentSynchronizers;
         private readonly IEnvironmentSynchronizationStore _environmentSynchronizationStore;
-        private StringBuilder resultLog = new StringBuilder();
 
         public EnvironmentSynchronizationManager(
             IEnumerable<IEnvironmentSynchronizer> environmentSynchronizers, IEnvironmentSynchronizationStore environmentSynchronizationStore)
@@ -35,15 +34,17 @@ namespace Addon.Episerver.EnvironmentSynchronizer
 
         public string Synchronize()
         {
+	        var resultLog = new StringBuilder();
             string environmentName = GetEnvironmentName();
 
-           Synchronize(environmentName);
+            resultLog.AppendLine(Synchronize(environmentName));
 
             return resultLog.ToString();
         }
 
         public string Synchronize(string environmentName)
         {
+            var resultLog = new StringBuilder();
             Logger.Information($"Starting environment synchronization for environment named: {environmentName}");
             resultLog.AppendLine($"Starting environment synchronization for environment named: {environmentName}<br />");
 
