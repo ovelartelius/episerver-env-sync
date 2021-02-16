@@ -43,7 +43,7 @@ namespace Yoursite.Infrastructure.Environments
     [ServiceConfiguration(typeof(IEnvironmentSynchronizer))]
     public class TestEnvironmentSynchronizer : IEnvironmentSynchronizer
     {
-        public void Synchronize(string environmentName)
+        public string Synchronize(string environmentName)
         {
             //TODO: Do something
         }
