@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Diagnostics;
+using System.Text;
 using EPiServer.Logging;
 using EPiServer.PlugIn;
 using EPiServer.Scheduler;
@@ -9,14 +10,15 @@ namespace Addon.Episerver.EnvironmentSynchronizer.Jobs
 	[ScheduledPlugIn(
 		DisplayName = "Environment Synchronization", 
 		Description = "Ensures that content and settings that are stored in the databases are corrected given the current environment. This is helpful after a content synchronization between different Episerver environments. https://github.com/ovelartelius/episerver-env-sync", 
-		SortIndex = 100)
+		SortIndex = 100,
+		GUID = "1eda8c91-a367-41df-adee-e6143b1e37c3")
 	]
-	public class SynchronizationJob : ScheduledJobBase
+	public class EnvironmentSynchronizationJob : ScheduledJobBase
 	{
 		private static readonly ILogger Logger = LogManager.GetLogger();
 		private readonly IEnvironmentSynchronizationManager _environmentSynchronizationManager;
 
-		public SynchronizationJob(IEnvironmentSynchronizationManager environmentSynchronizationManager)
+		public EnvironmentSynchronizationJob(IEnvironmentSynchronizationManager environmentSynchronizationManager)
 		{
 			IsStoppable = false;
 			_environmentSynchronizationManager = environmentSynchronizationManager;
@@ -27,10 +29,11 @@ namespace Addon.Episerver.EnvironmentSynchronizer.Jobs
 		public override string Execute()
 		{
 			var tmr = Stopwatch.StartNew();
+			var resultLog = new StringBuilder();
 
 			try
 			{
-				_environmentSynchronizationManager.Synchronize();
+				resultLog.AppendLine(_environmentSynchronizationManager.Synchronize()) ;
 			}
 			catch (Exception ex)
 			{
@@ -40,12 +43,10 @@ namespace Addon.Episerver.EnvironmentSynchronizer.Jobs
 			tmr.Stop();
 			Duration = tmr.ElapsedMilliseconds;
 
-			return ToString();
-		}
+			resultLog.AppendLine(
+				$"Ran environment synchronization job. {Duration}ms on {Environment.MachineName}.");
 
-		public override string ToString()
-		{
-			return $"Ran environment synchronization job. {Duration}ms on {Environment.MachineName}.";
+			return resultLog.ToString();
 		}
 	}
 }

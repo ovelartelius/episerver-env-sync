@@ -9,6 +9,6 @@
         /// Synchronize the current environment given the environment name.
         /// </summary>
         /// <param name="environmentName"></param>
-        void Synchronize(string environmentName);
+        string Synchronize(string environmentName);
     }
 }

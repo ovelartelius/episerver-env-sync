@@ -5,6 +5,7 @@ using EPiServer.ServiceLocation;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 
 namespace Addon.Episerver.EnvironmentSynchronizer.Synchronizers.ScheduledJobs
 {
@@ -13,29 +14,33 @@ namespace Addon.Episerver.EnvironmentSynchronizer.Synchronizers.ScheduledJobs
     {
 		private static readonly ILogger Logger = LogManager.GetLogger();
 		private readonly IScheduledJobRepository _scheduledJobRepository;
-		private readonly ConfigurationReader _configurationReader;
+		private readonly IConfigurationReader _configurationReader;
+		private StringBuilder resultLog = new StringBuilder();
 
 		public ScheduledJobSynchronizer(
 			IScheduledJobRepository scheduledJobRepository,
-			ConfigurationReader configurationReader)
+			IConfigurationReader configurationReader)
         {
             Logger.Information("ScheduledJobSynchronizer initialized.");
 			_scheduledJobRepository = scheduledJobRepository;
 			_configurationReader = configurationReader;
-		}
+        }
 
-		public void Synchronize(string environmentName)
+		public string Synchronize(string environmentName)
         {
 	        Logger.Information("ScheduledJobSynchronizer starting synchronization.");
             var syncConfiguration = _configurationReader.ReadConfiguration();
 
             if(syncConfiguration.ScheduledJobs == null)
             {
-                return;
+	            resultLog.AppendLine("No ScheduleJob config found.<br />");
+                return resultLog.ToString();
             }
 
 			UpdateScheduledJobs(syncConfiguration.ScheduledJobs);
-		}
+
+			return resultLog.ToString();
+        }
 
 		private void UpdateScheduledJobs(List<ScheduledJobDefinition> scheduledJobConfiguration)
 		{
@@ -65,6 +70,7 @@ namespace Addon.Episerver.EnvironmentSynchronizer.Synchronizers.ScheduledJobs
 
                 existingScheduledJob.IsEnabled = job.IsEnabled;
                 Logger.Debug($"Set {existingScheduledJob.Name} ({existingScheduledJob.ID}) to IsEnabled={job.IsEnabled}. After * (wildcard) spec.");
+                resultLog.AppendLine($"Set {existingScheduledJob.Name} ({existingScheduledJob.ID}) to IsEnabled={job.IsEnabled}. After * (wildcard) spec.<br />");
                 _scheduledJobRepository.Save(existingScheduledJob);
             }
         }
@@ -97,11 +103,13 @@ namespace Addon.Episerver.EnvironmentSynchronizer.Synchronizers.ScheduledJobs
             {
                 existingJob.IsEnabled = job.IsEnabled;
                 Logger.Debug($"Set {existingJob.Name} ({existingJob.ID}) to IsEnabled={job.IsEnabled}.");
+                resultLog.AppendLine($"Set {existingJob.Name} ({existingJob.ID}) to IsEnabled={job.IsEnabled}.<br />");
                 _scheduledJobRepository.Save(existingJob);
             }
             else
             {
                 Logger.Warning($"Could not find scheduled job with {extraInfoMessage}");
+                resultLog.AppendLine($"Could not find scheduled job with {extraInfoMessage}<br />");
             }
         }
     }

@@ -1,8 +1,12 @@
-﻿using Addon.Episerver.EnvironmentSynchronizer.Configuration;
+﻿using System;
+using Addon.Episerver.EnvironmentSynchronizer.Configuration;
 using Addon.Episerver.EnvironmentSynchronizer.DynamicData;
+using Addon.Episerver.EnvironmentSynchronizer.Jobs;
+using EPiServer.DataAbstraction;
 using EPiServer.Framework;
 using EPiServer.Framework.Initialization;
 using EPiServer.Logging;
+using EPiServer.PlugIn;
 using EPiServer.ServiceLocation;
 
 namespace Addon.Episerver.EnvironmentSynchronizer.InitializationModule
@@ -16,6 +20,7 @@ namespace Addon.Episerver.EnvironmentSynchronizer.InitializationModule
 
 		public void Initialize(InitializationEngine context)
 		{
+			var scheduledJobRepository = ServiceLocator.Current.GetInstance<IScheduledJobRepository>();
 			var configReader = new ConfigurationReader();
 			var syncData = configReader.ReadConfiguration();
 			
@@ -40,8 +45,19 @@ namespace Addon.Episerver.EnvironmentSynchronizer.InitializationModule
 
 				if (!runInitialization) { return; }
 
-				environmentSynchronizationManager.Synchronize();
+				var jobId = ((ScheduledPlugInAttribute)typeof(EnvironmentSynchronizationJob).GetCustomAttributes(typeof(ScheduledPlugInAttribute), true)[0]).GUID;
+				var job = scheduledJobRepository.Get(Guid.Parse(jobId));
+				ScheduleRunNow(job, scheduledJobRepository);
 			}
+		}
+
+		private static void ScheduleRunNow(ScheduledJob job, IScheduledJobRepository scheduledJobRepository)
+		{
+			job.IntervalType = ScheduledIntervalType.None;
+			job.IntervalLength = 0;
+			job.IsEnabled = true;
+			job.NextExecution = DateTime.Now.AddSeconds(10);
+			scheduledJobRepository.Save(job);
 		}
 
 		public void Preload(string[] parameters) { }
